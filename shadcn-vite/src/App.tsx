@@ -13,12 +13,12 @@ function App() {
   return (
     <div id="root" className="flex h-screen">
       {/* Sidebar on the left */}
-      <aside className="w-1/4 bg-gray-200 p-4 border-r border-gray-300">
+      <aside className=" bg-gray-200 p-4 border-r border-gray-300">
         <TaskSidebar />
       </aside>
 
       {/* Task table on the right */}
-      <main className="w-3/4 p-4">
+      <main className=" p-4">
         <TaskTable tasks={tasks} />
       </main>
     </div>
