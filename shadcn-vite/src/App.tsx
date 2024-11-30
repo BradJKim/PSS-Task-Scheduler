@@ -11,7 +11,7 @@ function App() {
   ];
 
   return (
-    <div className="flex h-screen">
+    <div id="root" className="flex h-screen">
       {/* Sidebar on the left */}
       <aside className="w-1/4 bg-gray-200 p-4 border-r border-gray-300">
         <TaskSidebar />
