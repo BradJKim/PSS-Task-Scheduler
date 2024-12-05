@@ -4,10 +4,22 @@ import TaskSidebar from "./components/TaskSidebar"; // Import the sidebar compon
 
 function App() {
   const tasks = [
-    { id: 1, name: "Task 1", date: "2024-11-25", time: "14:00" },
-    { id: 2, name: "Task 2", date: "2024-11-26", time: "09:00" },
-    { id: 3, name: "Task 3", date: "2024-11-27", time: "16:30" },
-    { id: 4, name: "Task 4", date: "2024-11-25", time: "10:00" },
+    {
+      id: 1,
+      name: 'Task 1',
+      date: '2024-12-05',
+      startTime: '10:00',
+      endTime: '11:00',
+      type: 'Work',
+    },
+    {
+      id: 2,
+      name: 'Task 2',
+      date: '2024-12-06',
+      startTime: '14:00',
+      endTime: '15:00',
+      type: 'Personal',
+    },
   ];
 
   return (
@@ -15,6 +27,11 @@ function App() {
       {/* Sidebar on the left */}
       <aside className=" bg-gray-200 p-4 border-r border-gray-300">
         <TaskSidebar />
+        {/* <div className="bg-red-500 text-red p-4">Test</div>
+
+        <div style={{ backgroundColor: 'red', color: 'white' }}>Test</div> */}
+
+
       </aside>
 
       {/* Task table on the right */}
@@ -22,6 +39,7 @@ function App() {
         <TaskTable tasks={tasks} />
       </main>
     </div>
+    
   );
 }
 

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import DatePicker from "./DatePicker"; // Import the DatePicker component
+import DatePicker from "./DatePicker";
 import TimePicker from "./TimePicker";
+import RecurTaskDropdown from "./RecurTaskDropdown";
+import TransTaskDropdown from "./TransTaskDropdown";
 
 const TaskSidebar = () => {
-  const [taskType, setTaskType] = useState<"one-time" | "recurring" | "antitask">("one-time");
+  const [taskType, setTaskType] = useState<"one-time" | "recurring">("one-time");
   const [taskName, setTaskName] = useState("");
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
@@ -33,7 +35,19 @@ const TaskSidebar = () => {
 
   return (
     <div className="w-1/4 bg-gray-100 p-4 h-screen flex flex-col">
-      <h2 className="text-xl font-bold mb-4">Create Task</h2>
+      <h2 className="text-xl font-bold mb-4">PSS Task Scheduler</h2>
+
+      {/* Import and Export Tasks Buttons */}
+      <div className="mb-4">
+        {/* Explort Button */}
+        <Button variant="primary" onClick={handleTaskSubmission}>
+          Export Tasks
+        </Button>
+        {/* Import Button */}
+        <Button variant="primary" onClick={handleTaskSubmission}>
+          Import Tasks
+        </Button>
+      </div>
 
       {/* Task Type Selection */}
       <div className="mb-4">
@@ -49,13 +63,6 @@ const TaskSidebar = () => {
           className="ml-2"
         >
           Recurring Task
-        </Button>
-        <Button
-          variant={taskType === "antitask" ? "primary" : "secondary"}
-          onClick={() => setTaskType("antitask")}
-          className="ml-2"
-        >
-          Antitask
         </Button>
       </div>
 
@@ -80,6 +87,20 @@ const TaskSidebar = () => {
         <div className="mb-4">
           <label className="block mb-1 text-sm font-medium">End Date</label>
           <DatePicker selectedDate={endDate} onDateChange={setEndDate} />
+        </div>
+      )}
+
+      {/* Recurring Task Dropdown (Only for Recurring Tasks) */}
+      {taskType === "recurring" && (
+        <div className="mb-4">
+          <RecurTaskDropdown />
+        </div>
+      )}
+
+      {/* Transient Task Dropdown (Only for Transient Tasks) */}
+      {taskType === "one-time" && (
+        <div className="mb-4">
+          <TransTaskDropdown />
         </div>
       )}
 
@@ -109,10 +130,13 @@ const TaskSidebar = () => {
         />
       </div>
 
-      {/* Submit Button */}
-      <Button variant="primary" onClick={handleTaskSubmission}>
-        Create Task
-      </Button>
+      <div className="mb-4">
+        {/* Submit Button */}
+        <Button variant="primary" onClick={handleTaskSubmission}>
+          Create Task
+        </Button>
+      </div>
+
     </div>
   );
 };

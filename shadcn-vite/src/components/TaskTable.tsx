@@ -6,20 +6,23 @@ import { Button } from './ui/button';
 interface Task {
   id: string | number;
   name: string;
-  date: string; 
-  time: string; 
+  date: string;
+  startTime: string; // Updated to include start time
+  endTime: string;   // Updated to include end time
+  type: string;
 }
 
 interface TaskTableProps {
   tasks: Task[];
+  onDelete: (taskId: string | number) => void; // New prop for deleting tasks
 }
 
-const TaskTable: React.FC<TaskTableProps> = ({ tasks }) => {
+const TaskTable: React.FC<TaskTableProps> = ({ tasks, onDelete }) => {
   const [view, setView] = useState<'day' | 'week' | 'month' | 'past'>('day');
 
   const getTasksByDate = (date: Date): Task[] => {
     return tasks.filter((task) => {
-      const taskDate = new Date(`${task.date}T${task.time}`);
+      const taskDate = new Date(`${task.date}T${task.startTime}`);
       if (view === 'day') {
         return isSameDay(taskDate, date);
       }
@@ -48,17 +51,27 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks }) => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Task</TableHead>
-            <TableHead>Due Date</TableHead>
-            <TableHead>Time</TableHead>
+            <TableHead className="p-4">Task</TableHead>
+            <TableHead>Type</TableHead>
+            <TableHead>Date</TableHead>
+            <TableHead>Start Time</TableHead>
+            <TableHead>End Time</TableHead>
+            <TableHead></TableHead> {/* New column */}
           </TableRow>
         </TableHeader>
         <TableBody>
           {tasksForPeriod.map((task) => (
             <TableRow key={task.id}>
               <TableCell>{task.name}</TableCell>
-              <TableCell>{format(new Date(`${task.date}T${task.time}`), 'yyyy-MM-dd')}</TableCell>
-              <TableCell>{task.time}</TableCell>
+              <TableCell>{task.type}</TableCell>
+              <TableCell>{format(new Date(`${task.date}T${task.startTime}`), 'yyyy-MM-dd')}</TableCell>
+              <TableCell>{task.startTime}</TableCell>
+              <TableCell>{task.endTime}</TableCell>
+              <TableCell>
+                <Button onClick={() => onDelete(task.id)} variant="danger">
+                  delete
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
