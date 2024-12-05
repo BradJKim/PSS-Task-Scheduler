@@ -4,9 +4,9 @@ public class RecurringTask extends Task{
     
     public int endDate = 0;
     public int repeatPeriod = 0; // in every num days
-
-    public RecurringTask(String id, String name, int date, String startTime, double duration, String type, int repeatPeriod, int endDate) {
-        super(id, name, date, startTime, duration, type);
+    
+    public RecurringTask(String id, String name, String dateString, String startTimeString, String endTimeString, String type, int repeatPeriod, int endDate) {
+        super(id, name, dateString, startTimeString, endTimeString);
         this.repeatPeriod = repeatPeriod;
         this.endDate = endDate;
     }
