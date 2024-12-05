@@ -25,10 +25,12 @@ public abstract class Task {
     private LocalTime endTime; // Start time of the task in HH:mm format
     private LocalDateTime dateTimeStart;
     private LocalDateTime dateTimeEnd;
+    private String taskSpecific;
 
-    public Task(String id, String name, String dateString, String startTimeString, String endTimeString) {
+    public Task(String id, String name, String dateString, String startTimeString, String endTimeString, String taskSpecific) {
         this.id = id;
         this.name = name;
+        this.taskSpecific = taskSpecific;
         this.date = LocalDate.parse(dateString);
         this.startTime = LocalTime.parse(startTimeString);
         this.endTime = LocalTime.parse(startTimeString);
@@ -73,5 +75,9 @@ public abstract class Task {
 
     public LocalDateTime getDateTimeEnd() {
         return dateTimeEnd;
+    }
+
+    public String getTaskSpecific() {
+        return taskSpecific;
     }
 }
