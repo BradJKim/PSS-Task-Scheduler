@@ -28,7 +28,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ selectedDate, onDateChange }) =
           {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
+      <PopoverContent className="w-auto p-0 bg-gray">
         <Calendar mode="single" selected={selectedDate} onSelect={onDateChange} initialFocus />
       </PopoverContent>
     </Popover>
