@@ -3,25 +3,22 @@ package com.services;
 import java.util.ArrayList;
 
 import com.models.Task;
-
 import com.utils.DataHandler;
-import com.utils.TimeValidator;
 
 public class TaskService {
 
     private ArrayList<Task> tasks;
 
-    private DataHandler dataHandler;
-
     // Constructor initializes the tasks list
     public TaskService() {
         this.tasks = new ArrayList<>();
-        this.dataHandler = new DataHandler();
+        tasks = DataHandler.getTasks();
     }
 
     // Method to add a task
     public void addTask(Task task) {
         tasks.add(task);
+        DataHandler.addTask(task);
     }
 
     // Method to get all tasks
@@ -30,9 +27,9 @@ public class TaskService {
     }
 
     // Method to get a specific task by name
-    public Task getTaskByName(String name) {
+    public Task getTaskById(String id) {
         for (Task task : tasks) {
-            if (task.getName().equals(name)) {
+            if (task.getId().equals(id)) {
                 return task;
             }
         }
@@ -40,10 +37,11 @@ public class TaskService {
     }
 
     // Method to remove a task by name
-    public boolean removeTask(String name) {
-        Task taskToRemove = getTaskByName(name);
+    public boolean removeTask(String id) {
+        Task taskToRemove = getTaskById(id);
         if (taskToRemove != null) {
             tasks.remove(taskToRemove);
+            DataHandler.removeTask(id);
             return true;
         }
         return false; // task not found

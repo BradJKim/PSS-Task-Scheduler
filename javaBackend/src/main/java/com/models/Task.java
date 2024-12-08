@@ -1,21 +1,8 @@
 package com.models;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
 import java.time.LocalTime;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type" // field that determines subclass
-)
-@JsonSubTypes({
-    @JsonSubTypes.Type(value = TransientTask.class, name = "transient"),
-    @JsonSubTypes.Type(value = RecurringTask.class, name = "recurring")
-})
 
 public abstract class Task {
     private String id; // Unique ID for each task
@@ -27,13 +14,13 @@ public abstract class Task {
     private LocalDateTime dateTimeEnd;
     private String taskSpecific;
 
-    public Task(String id, String name, String dateString, String startTimeString, String endTimeString, String taskSpecific) {
+    public Task(String id, String name, String taskSpecific, String dateString, String startTimeString, String endTimeString) {
         this.id = id;
         this.name = name;
         this.taskSpecific = taskSpecific;
         this.date = LocalDate.parse(dateString);
         this.startTime = LocalTime.parse(startTimeString);
-        this.endTime = LocalTime.parse(startTimeString);
+        this.endTime = LocalTime.parse(endTimeString);
         this.dateTimeStart = startTime.atDate(date);
         this.dateTimeEnd = endTime.atDate(date);
     }

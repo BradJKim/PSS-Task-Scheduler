@@ -1,5 +1,7 @@
-{
-    "storedTasks": {
-        
-    }
-}
+{"tasks": {"39ad53df-1dc3-45ad-8b65-ca9c26fac06c": {
+    "date": "2004-01-02",
+    "name": "task1",
+    "startTime": "12:00",
+    "id": "39ad53df-1dc3-45ad-8b65-ca9c26fac06c",
+    "endTime": "12:30"
+}}}
