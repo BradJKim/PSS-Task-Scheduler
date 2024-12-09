@@ -54,9 +54,9 @@ public class TaskController {
 
             Task task;
             if (type.equals("recurring")) {
-                task = new RecurringTask(id, name, taskSpecific, date, startTime, endTime, repeatPeriod, endDate);
+                task = new RecurringTask(id, name, taskSpecific, date, startTime, endTime, repeatPeriod, endDate, type);
             } else if (type.equals("transient")) {
-                task = new TransientTask(id, name, taskSpecific, date, startTime, endTime);
+                task = new TransientTask(id, name, taskSpecific, date, startTime, endTime, type);
             } else {
                 response.put("status", "error");
                 response.put("message", "Invalid task type");
@@ -104,9 +104,9 @@ public class TaskController {
 
         Task task;
         if (type.equals("recurring")) {
-            task = new RecurringTask(id, name, taskSpecific, date, startTime, endTime, repeatPeriod, endDate);
+            task = new RecurringTask(id, name, taskSpecific, date, startTime, endTime, repeatPeriod, endDate, type);
         } else if (type.equals("transient")) {
-            task = new TransientTask(id, name, taskSpecific, date, startTime, endTime);
+            task = new TransientTask(id, name, taskSpecific, date, startTime, endTime, type);
         } else {
             response.put("status", "error");
             response.put("message", "Invalid task type");

@@ -41,10 +41,10 @@ public class DataHandler {
 
                 Task task;
                 if (type.equals("recurring")) {
-                    task = new RecurringTask(id, name, taskSpecific, date, startTime, endTime, repeatPeriod, endDate);
+                    task = new RecurringTask(id, name, taskSpecific, date, startTime, endTime, repeatPeriod, endDate, type);
                     taskList.add(task);
                 } else if (type.equals("transient")) {
-                    task = new TransientTask(id, name, taskSpecific, date, startTime, endTime);
+                    task = new TransientTask(id, name, taskSpecific, date, startTime, endTime, type);
                     taskList.add(task);
                 }
             }
