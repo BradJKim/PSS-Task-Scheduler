@@ -1,7 +1,42 @@
-{"tasks": {"39ad53df-1dc3-45ad-8b65-ca9c26fac06c": {
-    "date": "2004-01-02",
-    "name": "task1",
-    "startTime": "12:00",
-    "id": "39ad53df-1dc3-45ad-8b65-ca9c26fac06c",
-    "endTime": "12:30"
-}}}
+{"tasks": {
+    "39ad53df-1dc3-45ad-8b65-ca9c26fac06c": {
+        "date": "2004-01-02",
+        "name": "task1",
+        "startTime": "12:00",
+        "id": "39ad53df-1dc3-45ad-8b65-ca9c26fac06c",
+        "endTime": "12:30",
+        "taskSpecific": "meal"
+    },
+    "cd404aa2-c8e1-459f-933c-5e9d01936e34": {
+        "date": "2004-01-03",
+        "name": "task2",
+        "startTime": "10:00",
+        "id": "cd404aa2-c8e1-459f-933c-5e9d01936e34",
+        "endTime": "11:00",
+        "taskSpecific": "meal"
+    },
+    "e32890a3-a209-475a-a672-d553bd7a3773": {
+        "date": "2004-01-04",
+        "name": "task2",
+        "startTime": "10:00",
+        "id": "e32890a3-a209-475a-a672-d553bd7a3773",
+        "endTime": "11:00",
+        "taskSpecific": "meal"
+    },
+    "9a15a1bb-5bd9-4b18-a487-5a0ee13d1893": {
+        "date": "2004-01-02",
+        "name": "task2",
+        "startTime": "10:00",
+        "id": "9a15a1bb-5bd9-4b18-a487-5a0ee13d1893",
+        "endTime": "11:00",
+        "taskSpecific": "meal"
+    },
+    "f63ad1b0-c1f0-4f0d-8f6e-5e0c6754e593": {
+        "date": "2004-01-04",
+        "name": "task2",
+        "startTime": "11:00",
+        "id": "f63ad1b0-c1f0-4f0d-8f6e-5e0c6754e593",
+        "endTime": "12:00",
+        "taskSpecific": "shop"
+    }
+}}

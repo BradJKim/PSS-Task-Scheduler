@@ -13,9 +13,8 @@ public abstract class Task {
     private LocalDateTime dateTimeStart;
     private LocalDateTime dateTimeEnd;
     private String taskSpecific;
-    private String type;
 
-    public Task(String id, String name, String taskSpecific, String dateString, String startTimeString, String endTimeString, String type) {
+    public Task(String id, String name, String taskSpecific, String dateString, String startTimeString, String endTimeString) {
         this.id = id;
         this.name = name;
         this.taskSpecific = taskSpecific;
@@ -24,7 +23,6 @@ public abstract class Task {
         this.endTime = LocalTime.parse(endTimeString);
         this.dateTimeStart = startTime.atDate(date);
         this.dateTimeEnd = endTime.atDate(date);
-        this.type = type;
     }
 
     // Getter for ID
@@ -63,9 +61,5 @@ public abstract class Task {
 
     public String getTaskSpecific() {
         return taskSpecific;
-    }
-
-    public String getType() {
-        return type;
     }
 }

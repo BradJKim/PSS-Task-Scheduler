@@ -10,7 +10,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.models.RecurringTask;
 import com.models.Task;
 import com.models.TransientTask;
 
@@ -25,28 +24,22 @@ public class DataHandler {
         try {
             String content = new String(Files.readAllBytes(Paths.get(FILEPATH)));
             JSONObject jsonObject = new JSONObject(content);
+            JSONObject tasks = jsonObject.getJSONObject("tasks");
 
-            Iterator<String> keys = jsonObject.keys();
+            Iterator<String> keys = tasks.keys();
             while (keys.hasNext()) {
-                String id = jsonObject.getString("id");
-                String name = jsonObject.getString("name");
-                String date = jsonObject.getString("dateString");
-                String startTime = jsonObject.getString("startTimeString");
-                String endTime = jsonObject.getString("endTimeString");
-                String type = jsonObject.getString("type");
-                String taskSpecific = jsonObject.getString("taskSpecific");
+                String key = keys.next();
+                JSONObject jsonTask = tasks.getJSONObject(key);
 
-                int repeatPeriod = jsonObject.has("repeatPeriod") ? jsonObject.getInt("repeatPeriod") : 0;
-                int endDate = jsonObject.has("endDate") ? jsonObject.getInt("endDate") : 0;
+                String id = jsonTask.getString("id");
+                String name = jsonTask.getString("name");
+                String date = jsonTask.getString("date");
+                String startTime = jsonTask.getString("startTime");
+                String endTime = jsonTask.getString("endTime");
+                String taskSpecific = jsonTask.getString("taskSpecific");
 
-                Task task;
-                if (type.equals("recurring")) {
-                    task = new RecurringTask(id, name, taskSpecific, date, startTime, endTime, repeatPeriod, endDate, type);
-                    taskList.add(task);
-                } else if (type.equals("transient")) {
-                    task = new TransientTask(id, name, taskSpecific, date, startTime, endTime, type);
-                    taskList.add(task);
-                }
+                Task task = new TransientTask(id, name, taskSpecific, date, startTime, endTime);
+                taskList.add(task);
             }
 
             return taskList;
@@ -79,6 +72,7 @@ public class DataHandler {
             newTask.put("date", task.getDate());
             newTask.put("startTime", task.getStartTime());
             newTask.put("endTime", task.getEndTime());
+            newTask.put("taskSpecific", task.getTaskSpecific());
 
             tasks.put(String.valueOf(task.getId()), newTask);
 
