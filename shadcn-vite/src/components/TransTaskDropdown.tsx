@@ -1,5 +1,5 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { Button } from "@/components/ui/button"; // Adjust the import path to your project's structure
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select"; // Adjust the import path to your project's structure
+import { Button } from "@/components/ui/button"; // If needed, keep the button component for other use cases
 
 const Dropdown = () => {
   const handleSelect = (value: string) => {
@@ -7,37 +7,16 @@ const Dropdown = () => {
   };
 
   return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild>
-        <Button variant="default">Task Type</Button>
-      </DropdownMenu.Trigger>
-
-      <DropdownMenu.Portal>
-        <DropdownMenu.Content
-          className="bg-neutral-900 border border-gray-200 rounded shadow-md p-2"
-          sideOffset={5}
-        >
-          <DropdownMenu.Item
-            onSelect={() => handleSelect('Option 1')}
-            className="cursor-pointer px-4 py-2 hover:bg-neutral-700 rounded"
-          >
-            Appointment
-          </DropdownMenu.Item>
-          <DropdownMenu.Item
-            onSelect={() => handleSelect('Option 2')}
-            className="cursor-pointer px-4 py-2 hover:bg-neutral-700 rounded"
-          >
-            Shopping
-          </DropdownMenu.Item>
-          <DropdownMenu.Item
-            onSelect={() => handleSelect('Option 3')}
-            className="cursor-pointer px-4 py-2 hover:bg-neutral-700 rounded"
-          >
-            Visit
-          </DropdownMenu.Item>
-        </DropdownMenu.Content>
-      </DropdownMenu.Portal>
-    </DropdownMenu.Root>
+    <Select onValueChange={handleSelect}>
+      <SelectTrigger>
+        <SelectValue placeholder="Task Type" />
+      </SelectTrigger>
+      <SelectContent className="bg-neutral-900 border border-gray-200 rounded shadow-md p-2">
+        <SelectItem value="Option 1">Appointment</SelectItem>
+        <SelectItem value="Option 2">Shopping</SelectItem>
+        <SelectItem value="Option 3">Visit</SelectItem>
+      </SelectContent>
+    </Select>
   );
 };
 

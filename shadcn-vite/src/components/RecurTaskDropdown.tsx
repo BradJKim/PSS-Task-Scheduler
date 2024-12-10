@@ -9,8 +9,8 @@ const Dropdown = () => {
   return (
     <Select onValueChange={handleSelect}>
       <SelectTrigger>
-          <SelectValue placeholder="Task Type" />
-        </SelectTrigger>
+        <SelectValue placeholder="Task Type" />
+      </SelectTrigger>
       <SelectContent className="bg-neutral-900 border border-gray-200 rounded shadow-md p-2">
         <SelectItem value="Option 1">Course</SelectItem>
         <SelectItem value="Option 2">Exercise</SelectItem>
