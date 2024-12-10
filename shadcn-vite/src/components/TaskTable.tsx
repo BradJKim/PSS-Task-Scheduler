@@ -14,10 +14,10 @@ interface Task {
 
 interface TaskTableProps {
   tasks: Task[];
-  onDelete: (taskId: string | number) => void; // New prop for deleting tasks
+  // onDelete: (taskId: string | number) => void; // New prop for deleting tasks
 }
 
-const TaskTable: React.FC<TaskTableProps> = ({ tasks, onDelete }) => {
+const TaskTable: React.FC<TaskTableProps> = ({ tasks}) => {
   const [view, setView] = useState<'day' | 'week' | 'month' | 'past'>('day');
 
   const getTasksByDate = (date: Date): Task[] => {
@@ -42,7 +42,9 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, onDelete }) => {
       return false;
     });
   };
-
+  const onDelete = (taskId: string | number) => {
+    console.log("deleted " +taskId);
+  };
   const renderTable = () => {
     const date = new Date();
     const tasksForPeriod = getTasksByDate(date);

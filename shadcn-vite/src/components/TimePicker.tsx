@@ -28,9 +28,9 @@ const TimePicker: React.FC<TimePickerProps> = ({
         <SelectTrigger>
           <SelectValue placeholder="Hour" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-neutral-900">
           {hours.map((hour) => (
-            <SelectItem key={hour} value={hour}>
+            <SelectItem key={hour} value={hour} className="cursor-pointer px-4 py-2 hover:bg-neutral-700 rounded">
               {hour}
             </SelectItem>
           ))}
@@ -42,9 +42,9 @@ const TimePicker: React.FC<TimePickerProps> = ({
         <SelectTrigger>
           <SelectValue placeholder="Minute" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-neutral-900">
           {minutes.map((minute) => (
-            <SelectItem key={minute} value={minute}>
+            <SelectItem key={minute} value={minute} className="cursor-pointer px-4 py-2 hover:bg-neutral-700 rounded">
               {minute}
             </SelectItem>
           ))}
@@ -56,9 +56,9 @@ const TimePicker: React.FC<TimePickerProps> = ({
         <SelectTrigger>
           <SelectValue placeholder="AM/PM" />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="bg-neutral-900">
           {amPmOptions.map((amPm) => (
-            <SelectItem key={amPm} value={amPm}>
+            <SelectItem key={amPm} value={amPm} className="cursor-pointer px-4 py-2 hover:bg-neutral-700 rounded">
               {amPm}
             </SelectItem>
           ))}

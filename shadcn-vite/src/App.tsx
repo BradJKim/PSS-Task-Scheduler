@@ -1,45 +1,39 @@
-import "./App.css";
+// import "./App.css";
+import { useState, useEffect } from "react";
 import TaskTable from "./components/TaskTable";
-import TaskSidebar from "./components/TaskSidebar"; // Import the sidebar component
+import TaskSidebar from "./components/TaskSidebar";
 
 function App() {
-  const tasks = [
-    {
-      id: 1,
-      name: 'Task 1',
-      date: '2024-12-05',
-      startTime: '10:00',
-      endTime: '11:00',
-      type: 'Work',
-    },
-    {
-      id: 2,
-      name: 'Task 2',
-      date: '2024-12-06',
-      startTime: '14:00',
-      endTime: '15:00',
-      type: 'Personal',
-    },
-  ];
+  // State to hold tasks fetched from the API
+  const [tasks, setTasks] = useState([]);
+
+  // Fetch tasks from the API when the component mounts
+  useEffect(() => {
+    fetch("http://localhost:8080/tasks")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch tasks");
+        }
+        return response.json();
+      })
+      .then((data) => setTasks(data))
+      .catch((error) => {
+        console.error("Error fetching tasks:", error);
+      });
+  }, []);
 
   return (
     <div id="root" className="flex h-screen">
       {/* Sidebar on the left */}
-      <aside className=" bg-gray-200 p-4 border-r border-gray-300">
+      <aside className="p-4 border-r border-gray-300">
         <TaskSidebar />
-        {/* <div className="bg-red-500 text-red p-4">Test</div>
-
-        <div style={{ backgroundColor: 'red', color: 'white' }}>Test</div> */}
-
-
       </aside>
 
       {/* Task table on the right */}
-      <main className=" p-4">
+      <main className="p-4">
         <TaskTable tasks={tasks} />
       </main>
     </div>
-    
   );
 }
 
