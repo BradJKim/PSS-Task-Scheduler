@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
 import com.models.Task;
 import com.models.TransientTask;
@@ -74,7 +76,7 @@ public class TaskController {
     }
 
     @PostMapping("/add")
-    public Map<String, Object> addTask(@RequestBody String data) {
+    public ResponseEntity<Map<String, Object>> addTask(@RequestBody String data) {
         Map<String, Object> response = new HashMap<>();
         
         JSONObject jsonObject = new JSONObject(data);
@@ -96,14 +98,14 @@ public class TaskController {
             String newDateString = newDate.toString();
 
             Task task = new TransientTask(id, name, taskSpecific, newDateString, startTime, endTime);
-    
+
             boolean isValid = TimeValidator.isValidTask(task, getAllTasks());
             if(isValid) {
                 taskList.add(task);
             } else {
                 response.put("status", "error");
                 response.put("message", "Invalid task time detected");
-                return response;
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
             }
         }
 
@@ -115,9 +117,9 @@ public class TaskController {
 
         response.put("status", "success");
         response.put("message", "Valid Task(s) added successfully");
-        return response;
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
+    
     @DeleteMapping("/remove/{id}")
     public Map<String, Object> removeTask(@PathVariable("id") String id) {
         boolean success = taskService.removeTask(id);

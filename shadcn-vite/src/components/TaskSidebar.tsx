@@ -21,7 +21,7 @@ interface TaskSubmission {
   repeatPeriod: number;
 }
 
-const TaskSidebar = () => {
+const TaskSidebar = ({ fetchTasks }: { fetchTasks: () => Promise<void> }) => {
   const [taskDetails, setTaskDetails] = useState({
     type: "one-time" as "one-time" | "recurring",
     name: "",
@@ -65,6 +65,7 @@ const TaskSidebar = () => {
   
       const data = await response.json();
       console.log('Task created successfully:', data);
+      fetchTasks();
     } catch (error) {
       console.error('Error creating task:', error);
     }
@@ -77,26 +78,10 @@ const TaskSidebar = () => {
     }));
   };
 
-  // const handleImport = () => {
-  //   // Handle import logic here
-  //   console.log("Importing tasks...");
-  // };
-
-  // const handleExport = () => {
-  //   // Handle export logic here
-  //   console.log("Exporting tasks...");
-  // };
-
   return (
     <div className="w-full p-4 h-screen flex flex-col">
       <h2 className="text-xl font-bold mb-4 w-full">PSS Task Scheduler</h2>
       <div className="grid">
-
-        {/* Import and Export Tasks Buttons */}
-        {/* <div className="mb-4 ">
-          <Button onClick={handleImport}>Export Tasks</Button>
-          <Button onClick={handleExport}>Import Tasks</Button>
-        </div> */}
         
         <TaskName name={taskDetails.name} updateTaskDetail={updateTaskDetail} />
 
@@ -113,9 +98,16 @@ const TaskSidebar = () => {
           :
           <TaskCategory options={oneTimeTaskCategoryOptions} onSelect={(task) => updateTaskDetail("taskSpecific", task)} />
         }
-        
-        <TaskTimeSelect value={taskDetails.startTime} onChange={(time) => updateTaskDetail("startTime", time)} />
-        <TaskTimeSelect value={taskDetails.endTime} onChange={(time) => updateTaskDetail("endTime", time)} />
+
+        <div className="mb-4">
+          <label className="block mb-1 text-sm font-medium">Start Time</label>
+          <TaskTimeSelect value={taskDetails.startTime} onChange={(time) => updateTaskDetail("startTime", time)} />
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-1 text-sm font-medium">End Time</label>
+          <TaskTimeSelect value={taskDetails.endTime} onChange={(time) => updateTaskDetail("endTime", time)} />
+        </div>
 
 
         <div className="mb-4">

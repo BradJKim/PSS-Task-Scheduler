@@ -64,8 +64,6 @@ const TimePicker: React.FC<TimePickerProps> = ({ value, onChange, className = ''
     ];
 
     return (
-        <div className="mb-4">
-            <label className="block mb-1 text-sm font-medium">End Time</label>
             <div className={`flex gap-2 ${className}`}>
                 {selectConfigs.map((config, index) => (
                     <TimeSelect
@@ -77,7 +75,6 @@ const TimePicker: React.FC<TimePickerProps> = ({ value, onChange, className = ''
                     />
                 ))}
             </div>
-        </div>
     );
 };
 

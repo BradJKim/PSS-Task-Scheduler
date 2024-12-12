@@ -10,8 +10,7 @@ function App() {
   // State to hold tasks fetched from the API
   const [tasks, setTasks] = useState([]);
 
-  // Fetch tasks from the API when the component mounts
-  useEffect(() => {
+  const fetchTasks = async () => {
     fetch("http://localhost:8080/tasks")
       .then((response) => {
         if (!response.ok) {
@@ -23,20 +22,25 @@ function App() {
       .catch((error) => {
         console.error("Error fetching tasks:", error);
       });
+    };
+
+  // Fetch tasks from the API when the component mounts
+  useEffect(() => {
+    fetchTasks();
   }, []);
 
   return (
     <div id="root" className="flex h-screen">
       {/* Sidebar on the left */}
       <aside className="p-4">
-        <TaskSidebar />
+        <TaskSidebar fetchTasks={fetchTasks} />
         {/* <TaskSidebarOld /> */}
       </aside>
 
       {/* Task table on the right */}
       <main className="p-4">
-        <ImportExport />
-        <TaskTable tasks={tasks} />
+        <ImportExport tasks={tasks} />
+        <TaskTable tasks={tasks} fetchTasks={fetchTasks} />
       </main>
     </div>
   );
