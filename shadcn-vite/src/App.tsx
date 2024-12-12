@@ -2,8 +2,6 @@
 import { useState, useEffect } from "react";
 import TaskTable from "./components/TaskTable";
 import TaskSidebar from "./components/TaskSidebar";
-import TaskSidebarOld from "./components/TaskSidebarOld";
-import { Import } from "lucide-react";
 import ImportExport from "./components/ImportExport";
 
 function App() {
@@ -34,12 +32,11 @@ function App() {
       {/* Sidebar on the left */}
       <aside className="p-4">
         <TaskSidebar fetchTasks={fetchTasks} />
-        {/* <TaskSidebarOld /> */}
       </aside>
 
       {/* Task table on the right */}
       <main className="p-4">
-        <ImportExport tasks={tasks} />
+        <ImportExport tasks={tasks} fetchTasks={fetchTasks} />
         <TaskTable tasks={tasks} fetchTasks={fetchTasks} />
       </main>
     </div>
