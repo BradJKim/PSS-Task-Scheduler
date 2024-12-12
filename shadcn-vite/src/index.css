@@ -37,7 +37,6 @@ body {
 aside {
   flex-shrink: 0; /* Prevent sidebar from shrinking */
   width: 33%; /* Sidebar occupies 25% of the width */
-  border-right: 1px solid #ccc; /* Optional border */
   height: 100%; /* Ensure it spans full height */
   padding: 1rem; /* Add inner spacing */
   box-sizing: border-box; /* Include padding in width calculation */
@@ -70,7 +69,7 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
-  margin-bottom: 0.5em;
+  /* margin-bottom: 0.1em; */
   margin-right: 0.2em;
 }
 
@@ -101,12 +100,3 @@ h1 {
   }
 }
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
