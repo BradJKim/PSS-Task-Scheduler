@@ -1,156 +1,132 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import DatePicker from "./DatePicker";
-import TimePicker from "./TimePicker";
-import RecurTaskDropdown from "./RecurTaskDropdown";
-import TransTaskDropdown from "./TransTaskDropdown";
+
+import TaskName from "./TaskSidebar/TaskName";
+import TaskType from "./TaskSidebar/TaskType";
+import StartDateSelect from "./TaskSidebar/StartDateSelect";
+import TaskCategory from "./TaskSidebar/TaskCategory";
+import TaskTimeSelect from "./TaskSidebar/TaskTimeSelect";
+import TaskDuration from "./TaskSidebar/TaskDuration";
+
+
+const taskCategoryOptions: string[] = ["Course", "Exercise", "Meal", "Sleep", "Study", "Work"];
+const oneTimeTaskCategoryOptions: string[] = ["Appointment", "Shopping", "Visit"];
 
 interface TaskSubmission {
-  type: "one-time" | "recurring";
   name: string;
-  startDate: Date;
-  endDate: Date | null;
-  startTime: string;
-  endTime: string;
+  dateString: string;
+  startTimeString: string;
+  endTimeString: string;
+  taskSpecific: string;
+  repeatPeriod: number;
 }
 
 const TaskSidebar = () => {
-  const [taskType, setTaskType] = useState<"one-time" | "recurring">("one-time");
-  const [taskName, setTaskName] = useState("");
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
-  const [startHour, setStartHour] = useState("");
-  const [startMinute, setStartMinute] = useState("");
-  const [startAmPm, setStartAmPm] = useState("");
-  const [endHour, setEndHour] = useState("");
-  const [endMinute, setEndMinute] = useState("");
-  const [endAmPm, setEndAmPm] = useState("");
+  const [taskDetails, setTaskDetails] = useState({
+    type: "one-time" as "one-time" | "recurring",
+    name: "",
+    startDate: undefined as Date | undefined,
+    startTime: "",
+    endTime: "",
+    taskSpecific: "",
+    repeatPeriod: 1,
+  });
 
-  const handleTaskSubmission = () => {
-    const startTime = `${startHour}:${startMinute} ${startAmPm}`;
-    const endTime = `${endHour}:${endMinute} ${endAmPm}`;
-    const taskDetails = {
-      type: taskType,
-      name: taskName,
-      startDate,
-      endDate: taskType === "recurring" ? endDate : null,
-      startTime,
-      endTime,
-    };
-    console.log("Task Details:", taskDetails);
-    // Handle task creation logic here
+  const formatDateString = (date: Date): string => {
+    return date.toISOString().split('T')[0];
   };
+
+  const handleTaskSubmission = async () => {
+    if (!taskDetails.startDate) return;
+
+    const submissionDetails: TaskSubmission = {
+      name: taskDetails.name,
+      dateString: formatDateString(taskDetails.startDate),
+      startTimeString: taskDetails.startTime,
+      endTimeString: taskDetails.endTime,
+      taskSpecific: taskDetails.taskSpecific,
+      repeatPeriod: taskDetails.type === "recurring" ? taskDetails.repeatPeriod : 1,
+    };
+
+    console.log("Task Details:", submissionDetails);
+    // Handle task creation logic here
+    try {
+      const response = await fetch('http://127.0.0.1:8080/tasks/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionDetails),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log('Task created successfully:', data);
+    } catch (error) {
+      console.error('Error creating task:', error);
+    }
+  };
+
+  const updateTaskDetail = (key: string, value: string | number | Date) => {
+    setTaskDetails((prevDetails) => ({
+      ...prevDetails,
+      [key]: value,
+    }));
+  };
+
+  // const handleImport = () => {
+  //   // Handle import logic here
+  //   console.log("Importing tasks...");
+  // };
+
+  // const handleExport = () => {
+  //   // Handle export logic here
+  //   console.log("Exporting tasks...");
+  // };
 
   return (
     <div className="w-full p-4 h-screen flex flex-col">
       <h2 className="text-xl font-bold mb-4 w-full">PSS Task Scheduler</h2>
       <div className="grid">
+
         {/* Import and Export Tasks Buttons */}
-        <div className="mb-4">
-          {/* Explort Button */}
-          <Button variant="primary" onClick={handleTaskSubmission}>
-            Export Tasks
-          </Button>
-          {/* Import Button */}
-          <Button variant="primary" onClick={handleTaskSubmission}>
-            Import Tasks
-          </Button>
-        </div>
+        {/* <div className="mb-4 ">
+          <Button onClick={handleImport}>Export Tasks</Button>
+          <Button onClick={handleExport}>Import Tasks</Button>
+        </div> */}
+        
+        <TaskName name={taskDetails.name} updateTaskDetail={updateTaskDetail} />
 
-        {/* Task Type Selection */}
-        <div className="mb-4">
-          <Button
-            variant={taskType === "one-time" ? "primary" : "secondary"}
-            onClick={() => setTaskType("one-time")}
-          >
-            One-Time Task
-          </Button>
-          <Button
-            variant={taskType === "recurring" ? "primary" : "secondary"}
-            onClick={() => setTaskType("recurring")}
-            className="ml-2"
-          >
-            Recurring Task
-          </Button>
-        </div>
+        <TaskType type={taskDetails.type} updateTaskDetail={updateTaskDetail} />
 
-        {/* Task Name */}
-        <div className="mb-4">
-          <label className="block mb-1 text-sm font-medium">Task Name</label>
-          <Input
-            placeholder="Enter task name"
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
-          />
-        </div>
+        <StartDateSelect startDate={taskDetails.startDate} updateTaskDetail={updateTaskDetail} /> 
 
-        {/* Start Date */}
-        <div className="mb-4">
-          <label className="block mb-1 text-sm font-medium">Start Date</label>
-          <DatePicker selectedDate={startDate} onDateChange={setStartDate} />
-        </div>
+        { taskDetails.type === "recurring" &&
+          <TaskDuration duration={taskDetails.repeatPeriod} updateTaskDetail={updateTaskDetail} />
+        }
 
-        {/* End Date (Only for Recurring Tasks) */}
-        {taskType === "recurring" && (
-          <div className="mb-4">
-            <label className="block mb-1 text-sm font-medium">End Date</label>
-            <DatePicker selectedDate={endDate} onDateChange={setEndDate} />
-          </div>
-        )}
+        { taskDetails.type === "recurring" ?
+          <TaskCategory options={taskCategoryOptions} onSelect={(task) => updateTaskDetail("taskSpecific", task)} /> 
+          :
+          <TaskCategory options={oneTimeTaskCategoryOptions} onSelect={(task) => updateTaskDetail("taskSpecific", task)} />
+        }
+        
+        <TaskTimeSelect value={taskDetails.startTime} onChange={(time) => updateTaskDetail("startTime", time)} />
+        <TaskTimeSelect value={taskDetails.endTime} onChange={(time) => updateTaskDetail("endTime", time)} />
 
-        {/* Recurring Task Dropdown (Only for Recurring Tasks) */}
-        {taskType === "recurring" && (
-          <div className="mb-4">
-            <label className="block mb-1 text-sm font-medium">Task Type</label>
-            <RecurTaskDropdown />
-          </div>
-        )}
-
-        {/* Transient Task Dropdown (Only for Transient Tasks) */}
-        {taskType === "one-time" && (
-          <div className="mb-4">
-            <label className="block mb-1 text-sm font-medium">Task Type</label>
-            <TransTaskDropdown />
-          </div>
-        )}
-
-        {/* Start Time */}
-        <div className="mb-4">
-          <label className="block mb-1 text-sm font-medium">Start Time</label>
-          <TimePicker
-            selectedHour={startHour}
-            selectedMinute={startMinute}
-            selectedAmPm={startAmPm}
-            onHourChange={setStartHour}
-            onMinuteChange={setStartMinute}
-            onAmPmChange={setStartAmPm}
-          />
-        </div>
-
-        {/* End Time */}
-        <div className="mb-4">
-          <label className="block mb-1 text-sm font-medium">End Time</label>
-          <TimePicker
-            selectedHour={endHour}
-            selectedMinute={endMinute}
-            selectedAmPm={endAmPm}
-            onHourChange={setEndHour}
-            onMinuteChange={setEndMinute}
-            onAmPmChange={setEndAmPm}
-          />
-        </div>
 
         <div className="mb-4">
-          {/* Submit Button */}
-          <Button variant="primary" onClick={handleTaskSubmission}>
-            Create Task
-          </Button>
+          <Button onClick={handleTaskSubmission}>Create Task</Button>
         </div>
 
       </div>
     </div>
   );
 };
+
+
 
 export default TaskSidebar;

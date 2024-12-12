@@ -70,7 +70,7 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks}) => {
               <TableCell>{task.startTime}</TableCell>
               <TableCell>{task.endTime}</TableCell>
               <TableCell>
-                <Button onClick={() => onDelete(task.id)} variant="danger">
+                <Button onClick={() => onDelete(task.id)} variant="destructive">
                   delete
                 </Button>
               </TableCell>
