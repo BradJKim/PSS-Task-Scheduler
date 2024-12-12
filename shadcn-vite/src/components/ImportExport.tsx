@@ -1,5 +1,8 @@
 import { Button } from "./ui/button";
 
+import { useToast } from "@/hooks/use-toast"
+
+
 interface Task {
   id: string;
   name: string;
@@ -12,6 +15,8 @@ interface Task {
 }
 
 const ImportExport = ({ tasks } : { tasks: Task[]}) => {
+  const { toast } = useToast()
+
   const handleImport = () => {
     // Handle import logic here
     console.log("Importing tasks...");
@@ -37,6 +42,7 @@ const ImportExport = ({ tasks } : { tasks: Task[]}) => {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     } catch (error) {
+      toast({description: "Error exporting tasks", variant: "destructive"})
       console.error('Error exporting tasks:', error);
     }
   };

@@ -2,10 +2,13 @@ package com.scheduler_backend.demo;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,34 +37,37 @@ public class TaskController {
     @PostMapping("/load")
     public Map<String, Object> loadTasks(@RequestBody String data) {
         Map<String, Object> response = new HashMap<>();
-        
-        ArrayList<Task> currentTasks = taskService.getAllTasks();
-        for(Task task: currentTasks) {
-            taskService.removeTask(task.getId());
+
+        List<String> taskIds = taskService.getAllTasks()
+        .stream()
+        .map(Task::getId)
+        .collect(Collectors.toList());
+
+        for(String taskId : taskIds) {
+            taskService.removeTask(taskId);
         }
-        
-        JSONObject jsonObject = new JSONObject(data);
-        for (String key : jsonObject.keySet()) {
-            JSONObject taskJson = jsonObject.getJSONObject(key);
-    
+
+        JSONArray jsonArray = new JSONArray(data);
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject taskJson = jsonArray.getJSONObject(i);
+
             UUID uuid = UUID.randomUUID();
             String id = uuid.toString();
             String name = taskJson.getString("name");
-            String date = taskJson.getString("dateString");
-            String startTime = taskJson.getString("startTimeString");
-            String endTime = taskJson.getString("endTimeString");
+            String date = taskJson.getString("date");
+            String startTime = taskJson.getString("startTime");
+            String endTime = taskJson.getString("endTime");
             String taskSpecific = taskJson.getString("taskSpecific");
 
             Task task = new TransientTask(id, name, taskSpecific, date, startTime, endTime);
-    
-            // Add the task to the service
             taskService.addTask(task);
         }
 
         response.put("status", "success");
-        response.put("message", "Task added successfully");
+        response.put("message", "Tasks added successfully");
         return response;
     }
+
 
     @GetMapping("")
     public ArrayList<Task> getAllTasks() {

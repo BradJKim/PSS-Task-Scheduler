@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 
+import { useToast } from "@/hooks/use-toast"
+
 import TaskName from "./TaskSidebar/TaskName";
 import TaskType from "./TaskSidebar/TaskType";
 import StartDateSelect from "./TaskSidebar/StartDateSelect";
@@ -31,6 +33,8 @@ const TaskSidebar = ({ fetchTasks }: { fetchTasks: () => Promise<void> }) => {
     taskSpecific: "",
     repeatPeriod: 1,
   });
+  
+  const { toast } = useToast()
 
   const formatDateString = (date: Date): string => {
     return date.toISOString().split('T')[0];
@@ -67,6 +71,7 @@ const TaskSidebar = ({ fetchTasks }: { fetchTasks: () => Promise<void> }) => {
       console.log('Task created successfully:', data);
       fetchTasks();
     } catch (error) {
+      toast({description: "Error creating task", variant: "destructive"})
       console.error('Error creating task:', error);
     }
   };
