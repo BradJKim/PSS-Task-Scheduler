@@ -86,6 +86,8 @@ public class TaskController {
         String taskSpecific = jsonObject.getString("taskSpecific");
         int repeatPeriod = jsonObject.getInt("repeatPeriod");
 
+        ArrayList<Task> taskList = new ArrayList<>();
+
         for(int i=0; i<repeatPeriod; i++) {
             UUID uuid = UUID.randomUUID();
             String id = uuid.toString();
@@ -97,8 +99,16 @@ public class TaskController {
     
             boolean isValid = TimeValidator.isValidTask(task, getAllTasks());
             if(isValid) {
-                taskService.addTask(task);
+                taskList.add(task);
+            } else {
+                response.put("status", "error");
+                response.put("message", "Invalid task time detected");
+                return response;
             }
+        }
+
+        for(Task task: taskList) {
+            taskService.addTask(task);
         }
 
         taskService.displayTasks();
